@@ -2,6 +2,11 @@
 
 namespace Civil;
 
+/**
+ * The query will be your main factory to produce/process a builder.
+ *
+ * @author Daison Carino <daison12006013@gmail.com>
+ */
 abstract class Query
 {
     /**
