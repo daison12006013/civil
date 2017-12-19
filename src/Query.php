@@ -45,7 +45,7 @@ abstract class Query
 
         $reflection = new \ReflectionClass($this->registrar[$name]);
 
-        return $this->call($reflection->newInstanceArgs($args));
+        $this->call($reflection->newInstanceArgs($args));
     }
 
     /**
@@ -57,11 +57,13 @@ abstract class Query
     public static function initialize($builder = null)
     {
         if ($builder === null) {
-            if (! $this->model) {
+            $model = (new static(null))->model;
+
+            if (! $model) {
                 throw new \Exception('Provide the [model] property in your query class.');
             }
 
-            $builder = new $this->model;
+            $builder = (new $model)->newQuery();
         }
 
         return new static($builder);

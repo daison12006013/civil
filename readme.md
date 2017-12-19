@@ -8,6 +8,23 @@
 composer require daison/civil
 ```
 
+## Test
+
+To test this package, you may run `./vendor/bin/phpunit` and it should return something like this
+
+```bash
+PHPUnit 7.0-ga57366b by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 7.1.10-1+ubuntu16.04.1+deb.sury.org+1
+Configuration: /home/vagrant/repositories/civil/phpunit.xml
+
+......                                                              6 / 6 (100%)
+
+Time: 332 ms, Memory: 6.00MB
+
+OK (6 tests, 12 assertions)
+```
+
 ## Basic
 
 Assume that we have a class called `BookingQuery`, and below code is the simplest way to make a query class, by just providing the model class path.
