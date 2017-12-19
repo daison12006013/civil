@@ -1,3 +1,6 @@
+**Master Branch Status:**<br>
+[![Build Status](https://travis-ci.org/daison12006013/civil.svg?branch=master)](https://travis-ci.org/daison12006013/civil)
+
 # Civil Structural Builder for Laravel's Eloquent
 
 `TL;DR;` This package helps you separate a query from a model in which you could re-use for other models.
