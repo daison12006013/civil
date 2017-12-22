@@ -51,6 +51,8 @@ abstract class Query
         $reflection = new \ReflectionClass($this->registrar[$name]);
 
         $this->call($reflection->newInstanceArgs($args));
+
+        return $this;
     }
 
     /**
