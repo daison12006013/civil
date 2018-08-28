@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+use Illuminate\Pagination\LengthAwarePaginator;
+
 class Test extends \PHPUnit\Framework\TestCase
 {
     public function testSimpleQuery()
@@ -65,19 +67,33 @@ class Test extends \PHPUnit\Framework\TestCase
         $query->createdBy($userId = 2, 'tickets', 'reported_by_id');
 
         # there must be a record
-        $this->assertTrue($query->builder()->first() ? true : false);
-        $this->assertEquals($query->builder()->first()->reported_by_id, $userId);
+        $this->assertTrue($query->first() ? true : false);
+
+        # user id must be equal the one from the record
+        $this->assertEquals($query->first()->reported_by_id, $userId);
+
+        # calling the builder or directing calling non-existing method from the civil
+        # should resolve the method from builder
+        $this->assertEquals($query->builder()->first(), $query->first());
+
+        # assert paginate works in the query.
+        $this->assertInstanceOf(LengthAwarePaginator::class, $query->paginate(10));
+
+        # should contain a select
+        $this->assertRegExp('/select \* from \((.*)\) as (.*)/i', $query->rebuild()->toSql());
     }
 
-    public function testCall()
+    public function testMakeBuilderInstance()
     {
         $query = Queries\BookingQuery::initialize();
 
-        # or direct call of the query class
-        $query->call(new Builders\Creator($userId = 2, 'bookings', 'booked_by_id'));
+        # or direct makeBuilderInstance of the query class
+        $query->makeBuilderInstance(new Builders\Creator($userId = 2, 'bookings', 'booked_by_id'));
 
-        # there must be a record
-        $this->assertTrue($query->builder()->first() ? true : false);
-        $this->assertEquals($query->builder()->first()->booked_by_id, $userId);
+        $this->assertTrue($query->first() ? true : false);
+        $this->assertEquals($query->first()->booked_by_id, $userId);
+        $this->assertEquals($query->builder()->first(), $query->first());
+        $this->assertInstanceOf(LengthAwarePaginator::class, $query->paginate(10));
+        $this->assertRegExp('/select \* from \((.*)\) as (.*)/i', $query->rebuild()->toSql());
     }
 }
